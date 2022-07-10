@@ -1,0 +1,17 @@
+body{
+    background-color: #1B2481;
+}
+
+h1{
+    color:rgb(252, 217, 60);
+}
+
+img{
+    width: 40%;
+}
+
+@media only screen and (max-width: 550px) {
+    img {
+        width: 80%;
+    }
+  }
