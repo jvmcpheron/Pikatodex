@@ -1,17 +1,45 @@
 body{
     background-color: #1B2481;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+}
+
+#placeholder-image{
+    width: 100%;
 }
 
 h1{
-    color:rgb(252, 217, 60);
+    color:rgb(247, 202, 0);
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
 }
 
-img{
+#index-logo img{
     width: 40%;
 }
 
-@media only screen and (max-width: 550px) {
-    img {
+#result-logo img {
+    width: 60px;
+}
+
+.menu{
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+  .material-symbols-outlined {
+      padding-top: 3px;
+    
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
+  }
+ 
+  @media only screen and (max-width: 550px) {
+    #index-logo img {
         width: 80%;
     }
   }
