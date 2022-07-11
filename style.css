@@ -2,6 +2,7 @@ body{
     background-color: #1B2481;
     font-family: 'Courier New', Courier, monospace;
     color: white;
+    margin: 10px;
 }
 
 #placeholder-image{
