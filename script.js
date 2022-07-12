@@ -78,6 +78,7 @@ var pokeSpecData = fetch(
         let evolvesTo = "none";
         let evolvesFrom = data.chain.species.name;
         let evolvesLast = "none";
+        let evoTrigger = "none";
         
         if (data.chain.evolves_to[0] != undefined){
             evolvesTo = data.chain.evolves_to[0].species.name;
@@ -90,9 +91,20 @@ var pokeSpecData = fetch(
             console.log('test');
         };
         
+        if (evolvesLast === pokemon.toLowerCase()){
+            console.log("no evolution");
+        } else if (evolvesLast === "none" && evolvesTo === pokemon.toLowerCase()){
+            console.log("no evolution");
+        } else if (evolvesTo === "none"){
+            console.log("no evolution");
+        } else if(pokemon.toLowerCase() === evolvesFrom){
+            evoTrigger = data.chain.evolves_to[0].evolution_details[0].trigger.name;
+        } else if(pokemon.toLowerCase() === evolvesTo){
+            evoTrigger = data.chain.evolves_to[0].evolves_to[0].evolution_details[0].trigger.name;
+        }
         
         
-        applyEvoData(evolvesTo , evolvesFrom , evolvesLast);
+        applyEvoData(evolvesTo , evolvesFrom , evolvesLast , evoTrigger);
     });
     
 });
@@ -120,10 +132,11 @@ function applyImage (pokeImage , pokeShiny){
     document.getElementById('placeholder-image-2').src = pokeShiny;
 };
 
-function applyEvoData (evolvesTo , evolvesFrom , evolvesLast){
+function applyEvoData (evolvesTo , evolvesFrom , evolvesLast , evoTrigger){
     document.getElementById("evolves-to").textContent = evolvesTo.toUpperCase();
     document.getElementById('evolves-from').textContent = evolvesFrom.toUpperCase();
     document.getElementById('evolves-last').textContent = evolvesLast.toUpperCase();
+    document.getElementById('evolution-trigger').textContent = evoTrigger;
 };
 
 
