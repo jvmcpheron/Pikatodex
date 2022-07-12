@@ -2,6 +2,8 @@ let apiRoot = "https://pokeapi.co/api/v2/pokemon/";
 let pokemon = localStorage.getItem("Pokemon");
 let searchBtn2 = document.getElementById("search-btn2");
 
+//main data fetch
+
 var pokeData = fetch(
 	'https://pokeapi.co/api/v2/pokemon/' + pokemon.toLowerCase(),
 	{
@@ -10,7 +12,10 @@ var pokeData = fetch(
 ).then(response => response.json() 
 ).then(data => {
     let pokeNum = data.id;
-    let pokeAbility = [data.abilities[0].ability.name , data.abilities[1].ability.name];
+    let pokeAbility = [data.abilities[0].ability.name ];
+    if (data.abilities[1]){
+        pokeAbility.push(data.abilities[1].ability.name);
+    } 
     let typeOne = data.types[0].type.name;
     console.log(typeOne)
     let typeTwo = "none";
@@ -32,6 +37,8 @@ var pokeData = fetch(
     applyData(pokeNum , pokeAbility, typeOne , typeTwo , pokeName , pokeHeight , pokeWeight, pokeHP , pokeAtk , pokeDef , pokeSpAtk , pokeSpDef , pokeSpd , pokeTtlStat);
 });
 
+//image data fetch
+
 var pokeImageData = fetch(
 	'https://pokeapi.co/api/v2/pokemon-form/' + pokemon.toLowerCase(),
 	{
@@ -44,6 +51,52 @@ var pokeImageData = fetch(
     console.log(data);
     applyImage(pokeImage, pokeShiny);
 });
+
+//more pokemon info
+
+var pokeSpecData = fetch(
+	'https://pokeapi.co/api/v2/pokemon-species/' + pokemon.toLowerCase(),
+	{
+		method: 'GET',
+	}
+).then(response => response.json() 
+).then(data => {
+    console.log(data);
+
+
+//evolution data fetch
+
+    let evoApi = data.evolution_chain.url;
+    let evoData = fetch(
+        evoApi,
+        {
+            method: 'GET',
+        }
+    ).then(response => response.json() 
+    ).then(data => {
+        console.log(data);
+        let evolvesTo = "none";
+        let evolvesFrom = data.chain.species.name;
+        let evolvesLast = "none";
+        
+        if (data.chain.evolves_to[0] != undefined){
+            evolvesTo = data.chain.evolves_to[0].species.name;
+            if (data.chain.evolves_to[0].evolves_to[0] != undefined) {
+                evolvesLast = data.chain.evolves_to[0].evolves_to[0].species.name;
+            } else{
+                console.log('test');
+            }
+        } else{
+            console.log('test');
+        };
+        
+        
+        
+        applyEvoData(evolvesTo , evolvesFrom , evolvesLast);
+    });
+    
+});
+
 
 function applyData (pokeNum , pokeAbility, typeOne, typeTwo, pokeName , pokeHeight , pokeWeight , pokeHP , pokeAtk , pokeDef , pokeSpAtk , pokeSpDef , pokeSpd , pokeTtlStat){
     document.getElementById("pokedex-number").textContent = pokeNum;
@@ -60,12 +113,18 @@ function applyData (pokeNum , pokeAbility, typeOne, typeTwo, pokeName , pokeHeig
     document.getElementById("pokemon-sp-defense").textContent = pokeSpDef;
     document.getElementById('pokemon-speed').textContent = pokeSpd;
     document.getElementById('pokemon-stat-total').textContent = pokeTtlStat;
-}
+};
 
 function applyImage (pokeImage , pokeShiny){ 
     document.getElementById('placeholder-image').src = pokeImage;
     document.getElementById('placeholder-image-2').src = pokeShiny;
-}
+};
+
+function applyEvoData (evolvesTo , evolvesFrom , evolvesLast){
+    document.getElementById("evolves-to").textContent = evolvesTo.toUpperCase();
+    document.getElementById('evolves-from').textContent = evolvesFrom.toUpperCase();
+    document.getElementById('evolves-last').textContent = evolvesLast.toUpperCase();
+};
 
 
 searchBtn2.addEventListener("click", ()=>{
